@@ -1,0 +1,10 @@
+--- /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
++++ /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
+@@ -20,7 +20,6 @@
+         self.gru = nn.GRUCell(fingerprint_dim, fingerprint_dim)
+ 
+     def forward(self, atom, bond_index, bond):
+-        print("whb graphAttention-forward")
+         num_atom, atom_dim = atom.shape 
+         num_bond, bond_dim = bond.shape
+         bond_index = bond_index.t().contiguous()

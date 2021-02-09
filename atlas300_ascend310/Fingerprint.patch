@@ -1,0 +1,10 @@
+--- /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
++++ /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
+@@ -25,7 +25,6 @@
+         )
+ 
+     def forward(self, atom, bond, bond_index, mol_index):
+-        print("whb Fingerprint-forward")
+         atom = self.preprocess(atom)
+         num_atom, atom_dim = atom.shape
+ 

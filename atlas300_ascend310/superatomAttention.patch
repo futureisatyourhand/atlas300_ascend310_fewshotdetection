@@ -1,0 +1,10 @@
+--- /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
++++ /home/pytorch/ExplainableMol/code/AttentiveFP/AttentiveLayers.py
+@@ -16,7 +16,6 @@
+         self.gru = nn.GRUCell(fingerprint_dim, fingerprint_dim)
+         
+     def forward(self, superatom, atom, mol_index):
+-        print("whb superatomAttention-forward")
+         
+         superatom_num = mol_index.max().item() + 1 # number of molecules in a batch
+ 

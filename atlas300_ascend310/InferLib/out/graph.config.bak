@@ -1,0 +1,33 @@
+graphs {
+    graph_id: 10
+
+    engines {
+        id: 12
+        engine_name: "MindInferenceEngine"
+        so_name: "./libmind_inference_engine.so"
+        ai_config {
+            items {
+                name: "model_path"
+                value: "../../deploy21.om"
+            }
+            items {
+                name: "batch_size"
+                value: "1024"
+            }
+        }
+        side: DEVICE 
+    }
+
+    engines {
+        id: 13
+        engine_name: "OutputEngine"
+        so_name: "./liboutput_engine.so"
+        side: HOST
+    }
+
+    connects {
+        src_engine_id: 12
+        target_engine_id: 13
+    }
+
+}

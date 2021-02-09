@@ -1,0 +1,2 @@
+model_checkpoint_path: "yolov2_coco.ckpt"
+all_model_checkpoint_paths: "yolov2_coco.ckpt"

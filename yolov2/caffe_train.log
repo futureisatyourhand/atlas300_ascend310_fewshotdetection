@@ -1,0 +1,12 @@
+F0104 20:56:41.960284 11011 io.cpp:36] Check failed: fd != -1 (-1 vs. -1) File not found: ./solver.prototxt
+*** Check failure stack trace: ***
+    @     0x7f59a2d6e117  google::LogMessage::Fail()
+    @     0x7f59a2d6dfed  google::LogMessage::SendToLog()
+    @     0x7f59a2d6d970  google::LogMessage::Flush()
+    @     0x7f59a2d71232  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7f59a32727c8  caffe::ReadProtoFromTextFile()
+    @     0x7f59a327ea66  caffe::ReadSolverParamsFromTextFileOrDie()
+    @           0x409ac8  train()
+    @           0x406fa0  main
+    @     0x7f59a1cd4840  __libc_start_main
+    @           0x4077c9  _start

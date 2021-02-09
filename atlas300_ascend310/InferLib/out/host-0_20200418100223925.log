@@ -1,0 +1,120 @@
+[INFO] HDC(8329,python):2020-04-18-10:02:23.303.517 [CfgFileOpen:155] >>> File name invalid:/etc/hdcBasic.cfg
+[INFO] HDC(8329,python):2020-04-18-10:02:23.303.540 [hdcInit:445] >>> HDC pcie init,use default segment(524288)
+[INFO] HDC(8329,python):2020-04-18-10:02:23.303.548 [hdcInit:453] >>> Dbg, HDC get pcie segment 524288, socket segment 0
+[INFO] HDC(8329,python):2020-04-18-10:02:23.303.602 [hdcInit:488] >>> Dbg, HDC after init pcie segment 524288, socket segment 0
+[INFO] HDC(8329,python):2020-04-18-10:02:23.304.138 [hdcInit:503] >>> HDC init success.
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:23.306.320 [46180.062408]  [hdcdrv] [hdcdrv_config 1839] <python:8329> pid 8329 use segment 524288.
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.089 Perform HIAI system initialization ...,[hiaiengine/connector/host/../common/src/init.cpp:37:HIAI_Init], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.111 Init HdcClient with device id: 0,[hiaiengine/connector/host/../common/src/init.cpp:51:HIAI_Init], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.123 HdcClient::Init Start,[hiaiengine/connector/host/src/hdc/hdc.cpp:280:Init], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.174 HdcCommon::InitMsgSize Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:30:InitMsgSize], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.188 msgMaxSize_ = 524288, msgShortHeadDataMaxSize_ = 524276msgLongHeadDataMaxSize_ = 524264,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:47:InitMsgSize], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.199 HdcClient::RegRecvCallback Start,[hiaiengine/connector/host/src/hdc/hdc.cpp:418:RegRecvCallback], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.210 HdcClient::HDCCALLBACKWITHADDR Start,[hiaiengine/connector/host/src/hdc/hdc.cpp:433:RegRecvCallback], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.226 CreateGraph with configFile start, path is /home/liqian/inferences/InferLib/out/graph0.config,[hiaiengine/connector/host/../common/src/graph_impl.cpp:861:CreateGraph], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.867 get device number is 4,[hiaiengine/connector/host/src/hdc/hdc.cpp:716:CheckDeviceExist], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.327.892 HdcClient::CreateSession Start graphId = 1,[hiaiengine/connector/host/src/hdc/hdc.cpp:569:CreateSession], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.155 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[INFO] HDC(8329,python):2020-04-18-10:02:23.328.248 [drvHdcSetSessionReference:1607] >>> Invoke drvHdcSetSessionReference, session 9
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.299 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.342 HdcCommon::RecvMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:485:RecvMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.357 HdcCommon::Receive Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:562:Receive], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.381 HdcClient::SendMsg Start graphID = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:317:SendMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.415 HdcCommon::SendNormalMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:222:SendNormalMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.430 Send short msg seg info: seg size = 22, seg count = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:65:SendNormalShortMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.328.446 HdcClient::Send Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:350:Send], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.385 msg.type=1,[hiaiengine/connector/host/../common/src/message_parse_interface.cpp:300:ProcessMessage], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.427 HdcCommon::RecvMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:485:RecvMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.446 HdcCommon::Receive Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:562:Receive], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.489 JobId Generate: 20200418100223332,[hiaiengine/connector/host/../common/src/graph_impl.cpp:1161:GenerateJobId], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.544 start to HdcSendFile,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2208:HdcSendFile], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.562 start to ParseFileInCfg,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2144:ParseFileInCfg], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.581 start to GetSoFiles,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2261:GetSoFiles], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.616 start to GetDistinctFileName of srcFile : libmind_inference_engine.so,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2014:GetDistinctFileName], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.664 the file path ./libmind_inference_engine.so.signature is not like a real path,the input trustedPathSize is 4096, mmRealPath return -1, system errcode is 2,[hiaiengine/connector/host/../common/src/internal_api.cpp:123:CheckFileRealAndExistImpl], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.684 CheckFileRealAndExistImpl error, skip it, ret is : file path is invalid,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2094:RenameHostFileNameToDevice], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.705 The value of item in the AIConfig File is a File = ../../model_convert/bioavailability/tf.om,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2333:GetAIConfigItemFile], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.732 start to GetDistinctFileName of srcFile : tf.om,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2014:GetDistinctFileName], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.766 the file path ../../model_convert/bioavailability/tf.om.signature is not like a real path,the input trustedPathSize is 4096, mmRealPath return -1, system errcode is 2,[hiaiengine/connector/host/../common/src/internal_api.cpp:123:CheckFileRealAndExistImpl], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.783 CheckFileRealAndExistImpl error, skip it, ret is : file path is invalid,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2094:RenameHostFileNameToDevice], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.803 SendCreateDirMsg,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2444:SendCreateDirMsg], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.824 HdcClient::SendMsg Start graphID = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:317:SendMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.841 HdcCommon::SendNormalMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:222:SendNormalMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.859 Send short msg seg info: seg size = 23, seg count = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:65:SendNormalShortMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.332.877 HdcClient::Send Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:350:Send], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.223 msg.type=9,[hiaiengine/connector/host/../common/src/message_parse_interface.cpp:300:ProcessMessage], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.255 start to  ProcessCreateDirResultMsg,[hiaiengine/connector/host/../common/src/message_parse_interface.cpp:94:ProcessCreateDirResultMsg], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.274 device create dir result,[hiaiengine/connector/host/../common/src/graph_impl.cpp:4920:UpdateDeviceCreateDirResult], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.298 HdcCommon::RecvMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:485:RecvMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.315 HdcCommon::Receive Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:562:Receive], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.333.360 deviceId = 0,[hiaiengine/connector/host/src/hdc/hdc.cpp:684:SendFile], Msg: HIAI HDC info
+[INFO] HDC(8329,python):2020-04-18-10:02:23.333.675 [drvHdcSetSessionReference:1607] >>> Invoke drvHdcSetSessionReference, session 10
+[INFO] HDC(8329,python):2020-04-18-10:02:23.334.143 [send_data:541] >>> capacity.maxSegment: 524288, bufsize: 524288
+[INFO] HDC(8329,python):2020-04-18-10:02:23.344.415 [drvHdcClientSessionClose:536] >>> destroy client session(sock: 10)
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.344.713 send file, host_file_name=./libmind_inference_engine.so, device_file_name=/home/HwHiAiUser/hdcd/matrix/1/libmind_inference_engine.so,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2235:HdcSendFile], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.344.738 deviceId = 0,[hiaiengine/connector/host/src/hdc/hdc.cpp:684:SendFile], Msg: HIAI HDC info
+[INFO] HDC(8329,python):2020-04-18-10:02:23.345.010 [drvHdcSetSessionReference:1607] >>> Invoke drvHdcSetSessionReference, session 11
+[INFO] HDC(8329,python):2020-04-18-10:02:23.345.422 [send_data:541] >>> capacity.maxSegment: 524288, bufsize: 524288
+[INFO] HDC(8329,python):2020-04-18-10:02:23.355.666 [drvHdcClientSessionClose:536] >>> destroy client session(sock: 11)
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.355.960 send file, host_file_name=../../model_convert/bioavailability/tf.om, device_file_name=/home/HwHiAiUser/hdcd/matrix/1/tf.om,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2235:HdcSendFile], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.355.985 start to InternalCreateGraph,[hiaiengine/connector/host/../common/src/graph_impl.cpp:1963:InternalCreateGraph], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.356.009 [JobID=0][GraphID=0],GraphImpl Init, InitEngines thread is 8329,[hiaiengine/connector/host/../common/src/graph_impl.cpp:3246:Init], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.356.037 [JobID=20200418100223332][GraphID=1],InitMemoryPoolAndProfile,[hiaiengine/connector/host/../common/src/graph_impl.cpp:3368:InitMemoryPoolAndProfile], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.356.674 malloc host data_send_buffer = 1, dataRecvBuffer = 1,[hiaiengine/connector/host/../common/src/memory_pool.cpp:401:InitMemoryPoolHost], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.356.692 Graph id = 1 start to init host send memory pool,[hiaiengine/connector/host/../common/src/memory_pool.cpp:225:InitHostSendMemoryPool], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.087 malloc send buffer, host ctrl send buffer = 4, data send buffer = 4,[hiaiengine/connector/host/../common/src/memory_pool.cpp:296:InitHostSendMemoryPool], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.118 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.197 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.264 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.328 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[WARNING] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.364 mmSetThreadName return -1,[hiaiengine/connector/host/../common/src/worker.cpp:163:AddThread], Msg: failed to set thread name
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.408 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[WARNING] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.476 mmSetThreadName return -1,[hiaiengine/connector/host/../common/src/worker.cpp:163:AddThread], Msg: failed to set thread name
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.496 [JobID=20200418100223332][GraphID=1],soFileVec.size=1,[hiaiengine/connector/host/../common/src/graph_impl.cpp:5447:LoadSo], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.554 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.943 [JobID=20200418100223332][GraphID=1],InitEngines,[hiaiengine/connector/host/../common/src/graph_impl.cpp:3456:InitEngines], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.979 [JobID=20200418100223332][GraphID=1][EngineID=3,EngineName=OutputEngine],Engine Init:,[hiaiengine/connector/host/../common/src/engine.cpp:374:Init], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.362.993 SetDefaultEngineConfig:  engine id = 3,[hiaiengine/connector/host/../common/src/engine.cpp:703:SetDefaultEngineConfig], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.004 check engine config:  engine id = 3,[hiaiengine/connector/host/../common/src/engine.cpp:744:CheckEngineConfig], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.021 [JobID=20200418100223332][GraphID=1],InitConnects, graphID=1,[hiaiengine/connector/host/../common/src/graph_impl.cpp:3539:InitConnects], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.038 graphCfg.graph_id=1,[hiaiengine/connector/host/../common/src/graph_impl.cpp:3097:SendCreateMsg], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.064 GetRecvAddress, memoryEnd = 1,[hiaiengine/connector/host/../common/src/memory_pool.cpp:1891:GetRecvAddress], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.080 HdcClient::SendMsg Start graphID = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:317:SendMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.093 HdcCommon::SendNormalMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:222:SendNormalMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.108 Send short msg seg info: seg size = 269, seg count = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:65:SendNormalShortMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.363.127 HdcClient::Send Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:350:Send], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.394 msg.type=5,[hiaiengine/connector/host/../common/src/message_parse_interface.cpp:300:ProcessMessage], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.428 ParseRecvAddr Start,[hiaiengine/connector/host/../common/src/memory_pool.cpp:1962:ParseRecvAddr], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.457 device start result=16846848,which means running ok,[hiaiengine/connector/host/../common/src/graph_impl.cpp:4892:UpdateDeviceStartResult], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.477 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.584 HdcClient::SendMsg Start graphID = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:317:SendMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.625 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.667 Goto call drvHdcFastRecv,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:293:RecvMsgWithAddr], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.711 HdcCommon::SendNormalMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:222:SendNormalMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.773 Send short msg seg info: seg size = 16, seg count = 1,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:65:SendNormalShortMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.786 HdcClient::Send Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:350:Send], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.809 HdcCommon::RecvMsg Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:485:RecvMsg], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.820 HdcCommon::Receive Start,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:562:Receive], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.856 [JobID=20200418100223332][GraphID=1][EngineID=3,EngineName=OutputEngine],Engine Start,[hiaiengine/connector/host/../common/src/engine.cpp:201:Start], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.884 AddThread(),[hiaiengine/connector/host/../common/src/worker.cpp:186:AddThread], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.690.896 AddThread start.,[hiaiengine/connector/host/../common/src/worker.cpp:96:AddThread], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.691.014 ThreadAction(),[hiaiengine/connector/host/../common/src/worker.cpp:73:ThreadAction], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.691.043 [JobID=20200418100223332][GraphID=1][EngineID=3,EngineName=OutputEngine],Start to SetDataRecvFunctor,[hiaiengine/connector/host/../common/src/engine.cpp:671:SetDataRecvFunctor], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.713.823 HdcClient::HdcClientUninit Start,[hiaiengine/connector/host/src/hdc/hdc.cpp:243:HdcClientUninit], Msg: HIAI HDC info
+[INFO] HDC(8329,python):2020-04-18-10:02:23.713.850 [drvHdcClientSessionClose:536] >>> destroy client session(sock: 9)
+[INFO] HDC(8329,python):2020-04-18-10:02:23.714.141 [drvHdcRecvMsgLen:1332] >>> the session -1 of remote was closed
+[INFO] HDC(8329,python):2020-04-18-10:02:23.714.173 [drvHdcFastRecv:1788] >>> the session -1 of remote was closed
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.198 drvHdcRecv() return 25,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:568:Receive], Msg: running ok
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.215 RecvMsgWithAddr failed for drvHdcFastRecv return error, return 25,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:298:RecvMsgWithAddr], Msg: HIAI HDC info
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.230 Receive() return 16986192, which means : recv msg error,[hiaiengine/connector/host/../common/src/hdc/hdc_common.cpp:508:RecvMsg], Msg: running ok
+[WARNING] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.258 RecvDataHdcWithAddr RecvMsgWithAddr() failed because : send failed,[hiaiengine/connector/host/src/hdc/hdc.cpp:372:RecvDataHdcWithAddr], Msg: HIAI HDC warning
+[WARNING] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.273 HdcClient::RecvData RecvMsg() failed because recv msg error,[hiaiengine/connector/host/src/hdc/hdc.cpp:335:RecvData], Msg: HIAI HDC warning
+[INFO] HIAIENGINE(8329,python):2020-04-18-10:02:23.714.289 Process event = 0,[hiaiengine/connector/host/../common/src/graph_impl.cpp:2567:ProcessEvent], Msg: running ok
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.398.379 [46208.157337]  [hdcdrv] [hdcdrv_release 3341] <python:8329> release memory : task pid 8329, count 10
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.374 [46208.160523]  [hdcdrv] [hdcdrv_printf_mem_info 3287] <python:8329> mem_type: 0, nums: 4, mem_size: 12288 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.406 [46208.160529]  [hdcdrv] [hdcdrv_printf_mem_info 3287] <python:8329> mem_type: 1, nums: 4, mem_size: 256 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.421 [46208.160532]  [hdcdrv] [hdcdrv_printf_mem_info 3287] <python:8329> mem_type: 2, nums: 1, mem_size: 3072 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.434 [46208.160534]  [hdcdrv] [hdcdrv_printf_mem_info 3287] <python:8329> mem_type: 3, nums: 1, mem_size: 64 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.447 [46208.160536]  [hdcdrv] [hdcdrv_printf_mem_info 3287] <python:8329> mem_type: 4, nums: 0, mem_size: 0 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.460 [46208.160539]  [hdcdrv] [hdcdrv_printf_mem_info 3290] <python:8329> 0 tx_data, 1 tx_ctrl, 2 rx_data, 3 rx_ctrl, 4 dvpp, total size: 15680 kB
+[INFO] KERNEL(1637,sklogd):2020-04-18-10:02:51.402.473 [46208.160567]  [devdrv] [devdrv_manager_kernel_lib_proc_exit 138] <python:8329> kernel lib proc exit, host pid: 8329.

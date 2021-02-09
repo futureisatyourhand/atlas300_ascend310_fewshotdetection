@@ -1,0 +1,49 @@
+name: "yolov2_darknet416"
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    #source: "examples/yolo/data/lmdb/test2007_lmdb"
+    source: "lmdb/"
+    batch_size: 1 
+    backend: LMDB
+  }
+  input_param { shape: {dim:1 dim:3 dim:416 dim:416}}
+}
+
+layer {
+    bottom: "data"
+    top: "layer1-conv"
+    name: "layer1-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 32
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer{
+    bottom: "layer1-conv"
+    top: "layer1-conv"
+    name: "layer1-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer1-conv"
+    top: "layer1-act"
+    name: "layer1-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+####

@@ -1,0 +1,325 @@
+name: "yolov2_meta"
+#build/tools/convert_imageset 
+#--resize_height=416 --resize_width=416 
+#/home/huawei/test/ /home/huawei/test.txt 
+#/home/huawei/yolov2/mycaffe/test
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    source: "/home/huawei/yolov2/mycaffe/test/"
+    batch_size: 20 
+    backend: LMDB
+  }
+  input_param { shape: {dim:20 dim:4 dim:416 dim:416}}
+}
+
+layer {
+    bottom: "data"
+    top: "layer1-conv"
+    name: "layer1-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 32
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer{
+    bottom: "layer1-conv"
+    top: "layer1-scale"
+    name: "layer1-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer1-scale"
+    top: "layer1-act"
+    name: "layer1-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+####
+layer {
+    bottom: "layer1-act"
+    top: "layer1-maxpool"
+    name: "layer1-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+###############
+layer {
+    bottom: "layer1-maxpool"
+    top: "layer2-conv"
+    name: "layer2-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 64
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+
+layer {
+    bottom: "layer2-conv"
+    top: "layer2-scale"
+    name: "layer2-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer2-scale"
+    top: "layer2-act"
+    name: "layer2-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+
+layer {
+    bottom: "layer2-act"
+    top: "layer2-maxpool"
+    name: "layer2-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+#################
+layer {
+    bottom: "layer2-maxpool"
+    top: "layer3-conv"
+    name: "layer3-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 128
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer {
+    bottom: "layer3-conv"
+    top: "layer3-scale"
+    name: "layer3-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer3-scale"
+    top: "layer3-act"
+    name: "layer3-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+layer {
+    bottom: "layer3-act"
+    top: "layer3-maxpool"
+    name: "layer3-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+
+#############
+layer {
+    bottom: "layer3-maxpool"
+    top: "layer4-conv"
+    name: "layer4-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 256
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer {
+    bottom: "layer4-conv"
+    top: "layer4-scale"
+    name: "layer4-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer4-scale"
+    top: "layer4-act"
+    name: "layer4-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+layer {
+    bottom: "layer4-act"
+    top: "layer4-maxpool"
+    name: "layer4-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+
+#############
+layer {
+    bottom: "layer4-maxpool"
+    top: "layer5-conv"
+    name: "layer5-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 512
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer {
+    bottom: "layer5-conv"
+    top: "layer5-scale"
+    name: "layer5-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer5-scale"
+    top: "layer5-act"
+    name: "layer5-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+layer {
+    bottom: "layer5-act"
+    top: "layer5-maxpool"
+    name: "layer5-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+####################
+layer {
+    bottom: "layer5-maxpool"
+    top: "layer6-conv"
+    name: "layer6-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 1024
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer {
+    bottom: "layer6-conv"
+    top: "layer6-scale"
+    name: "layer6-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer6-scale"
+    top: "layer6-act"
+    name: "layer6-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+layer {
+    bottom: "layer6-act"
+    top: "layer6-maxpool"
+    name: "layer6-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 2
+        stride: 2
+        pool: MAX
+    }
+}
+####################
+layer {
+    bottom: "layer6-maxpool"
+    top: "layer7-conv"
+    name: "layer7-conv"
+    type: "Convolution"
+    convolution_param {
+        num_output: 1024
+        kernel_size: 3
+        pad: 1
+        stride: 1
+        bias_term: false
+    }
+}
+layer {
+    bottom: "layer7-conv"
+    top: "layer7-scale"
+    name: "layer7-scale"
+    type: "Scale"
+    scale_param {
+        bias_term: true
+    }
+}
+layer {
+    bottom: "layer7-scale"
+    top: "layer7-act"
+    name: "layer7-act"
+    type: "ReLU"
+    relu_param {
+        negative_slope: 0.1
+    }
+}
+layer {
+    bottom: "layer7-act"
+    top: "layer7-maxpool"
+    name: "layer7-maxpool"
+    type: "Pooling"
+    pooling_param {
+        kernel_size: 6
+        stride: 6
+        pool: MAX
+    }
+}

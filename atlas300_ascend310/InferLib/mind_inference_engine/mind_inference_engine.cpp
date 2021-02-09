@@ -1,0 +1,348 @@
+
+#include "mind_inference_engine.hpp"
+#include <hiaiengine/log.h>
+#include <hiaiengine/ai_types.h>
+#include "hiaiengine/ai_model_parser.h"
+#include <vector>
+#include <unistd.h>
+#include <thread>
+#include <fstream>
+#include <algorithm>
+#include <iostream>
+#include<sys/time.h>
+
+#define ATOM 32
+#define BOND 10
+#define INDEX 2
+
+HIAI_REGISTER_DATA_TYPE("EngineTransT", EngineTransT);
+HIAI_REGISTER_DATA_TYPE("OutputT", OutputT);
+HIAI_REGISTER_DATA_TYPE("ScaleInfoT", ScaleInfoT);
+HIAI_REGISTER_DATA_TYPE("NewImageParaT", NewImageParaT);
+HIAI_REGISTER_DATA_TYPE("BatchImageParaWithScaleT", BatchImageParaWithScaleT);
+HIAI_StatusT MindInferenceEngine::Init(const hiai::AIConfig& config,
+
+
+
+   const  std::vector<hiai::AIModelDescription>& model_desc)
+{
+    HIAI_ENGINE_LOG("[MindInferenceEngine] start init!");
+    hiai::AIStatus ret = hiai::SUCCESS;
+
+    if (nullptr == ai_model_manager_)
+    {
+        ai_model_manager_ = std::make_shared<hiai::AIModelManager>();
+    }
+
+    std::vector<hiai::AIModelDescription> model_desc_vec;
+    hiai::AIModelDescription model_desc_;
+    for (int index = 0; index < config.items_size(); ++index)
+    {
+
+        const ::hiai::AIConfigItem& item = config.items(index);
+        if(item.name() == "model_path")
+        {
+            const char* model_path = item.value().data();
+            model_desc_.set_path(model_path);
+
+        } else if (item.name() == "passcode") {
+            const char* passcode = item.value().data();
+            model_desc_.set_key(passcode);
+        } else if (item.name() == "batch_size") {
+            std::stringstream ss(item.value());
+            ss >> batch_size;
+        }
+    }
+
+    model_desc_vec.push_back(model_desc_);
+    ret = ai_model_manager_->Init(config, model_desc_vec);
+    if (hiai::SUCCESS != ret)
+    {
+	state = 1;
+        return HIAI_ERROR;
+    }
+
+    state = 0;
+    HIAI_ENGINE_LOG("[MindInferenceEngine] end init!");
+    return HIAI_OK;
+}
+
+/**
+* @ingroup hiaiengine
+* @brief HIAI_DEFINE_PROCESS : Realize the port input/output processing
+* @[in]: Define an input port, an output port,
+*        And the Engine is registered, its called "HIAIMultiEngineExample"
+*/
+HIAI_IMPL_ENGINE_PROCESS("MindInferenceEngine", MindInferenceEngine, INPUT_SIZE)
+{
+    struct  timeval start, start1;
+    struct  timeval end, end1;
+    double diff, diff1;
+    string err_msg = "";
+    int tmp1, tmp2; 
+    float chk0, chk1, chk2, chk3;
+    float chk4, chk5, chk6, chk7;
+    
+
+
+    //HIAI_ENGINE_LOG("[MindInferenceEngine] start process!");
+    hiai::AIStatus ret = hiai::SUCCESS;
+    HIAI_StatusT hiai_ret = HIAI_OK;
+    std::shared_ptr<EngineTransT> tran_data = std::make_shared<EngineTransT>();
+
+    gettimeofday(&start, NULL);
+    auto check_status = [this](HIAI_StatusT ret_status, std::string error_msg) {
+        if (HIAI_OK != ret_status)
+            HIAI_ENGINE_LOG(error_msg.c_str());
+    };
+
+    auto send_data_when_exception = [this, tran_data, &check_status](std::string error_msg) {
+        HIAI_ENGINE_LOG(error_msg.c_str());
+        
+	//tran_data->result_data = 77;
+	//tran_data->result_len = 88; //image_handle->result_len;
+        tran_data->status = false;
+        tran_data->msg = error_msg;
+        //send null to next node to avoid blocking when to encounter abnomal situation.
+        SendData(0, "EngineTransT", std::static_pointer_cast<void>(tran_data));
+    };
+    // 1.PreProcess:Framework input data
+    std::shared_ptr<BatchImageParaWithScaleT> image_handle = std::static_pointer_cast<BatchImageParaWithScaleT>(arg0);
+
+    if (nullptr == image_handle)
+    {
+        send_data_when_exception("[MindInferenceEngine] Image_handle is nullptr");
+        return HIAI_ERROR;
+    }
+
+
+    //add sentinel image for showing this data in dataset are all sended, this is last step.
+    if (isSentinelImage(image_handle))
+    {
+        int repeat = 0;
+        tran_data->status = true;
+        tran_data->msg = "sentinel Image";
+        tran_data->b_info = image_handle->b_info;
+        do{
+            HIAI_ENGINE_LOG("[MindInferenceEngine] sentinel image, process success!");
+            hiai_ret = SendData(0, "EngineTransT", std::static_pointer_cast<void>(tran_data));
+            if (HIAI_OK != hiai_ret)
+            {
+                HIAI_ENGINE_LOG("[MindInferenceEngine] queue full, sleep 200ms");
+                usleep(SEND_DATA_INTERVAL_MS);
+            }
+            repeat++;
+        } while ((HIAI_OK != hiai_ret) && (repeat < 20));
+        return HIAI_OK;
+    }
+    
+    int image_number = image_handle->v_img.size();
+   
+    int repeat = 0;
+    //whb check 
+    int image_size = image_handle->v_img[0].img.size;
+    int batch_buffer_size = image_size * batch_size * sizeof(float);
+    //int batch_buffer_size = 3*17*1;
+    std::vector<std::shared_ptr<hiai::IAITensor>> input_data_vec;
+    std::vector<std::shared_ptr<hiai::IAITensor>> output_data_vec;
+
+    float *_input_buffer1;
+    int atom_size = image_size;// * ATOM / (ATOM+BOND+INDEX);
+    //int bond_size = image_size * BOND / (ATOM+BOND+INDEX);
+    //int index_size = image_size * INDEX / (ATOM+BOND+INDEX);
+
+    try{
+        _input_buffer1 = new float[batch_buffer_size/sizeof(float)];
+    }
+    catch (const std::bad_alloc& e) {
+        return HIAI_ERROR;
+    }
+
+    HIAI_ENGINE_LOG("[MindInferenceEngine] batch bufer size: %d,  image size: %d", batch_buffer_size, image_handle->v_img[0].img.size);
+
+
+
+
+    //the loop for each batch
+    for (int i = 0; i < image_number; i += batch_size) {
+        //1.prepare input buffer for each batch
+        if(tran_data == nullptr) {
+            tran_data = std::make_shared<EngineTransT>();
+        }
+
+        tran_data->b_info.is_first = (i == 0 ? true : false);
+        tran_data->b_info.is_last = (i == image_number - batch_size ? true : false);
+        tran_data->b_info.batch_ID = (uint32_t)(i / batch_size);//the batch ID innerhalb all the received data
+        tran_data->b_info.max_batch_size = batch_size;
+        tran_data->b_info.batch_size = batch_size;
+        bool is_successed = true;
+        float *pdata ;
+        //the loop for each image
+        for (int j = 0; j < batch_size; j++) {
+            if (i + j < image_number) {
+		pdata = image_handle->v_img[i + j].img.data.get();
+                if (memcpy_s(_input_buffer1 + j*atom_size, atom_size*sizeof(float), pdata, atom_size*sizeof(float))) {
+                    HIAI_ENGINE_LOG("[MindInferenceEngine] ERROR, copy image buffer failed");
+                    is_successed = false;
+                    break;
+                }
+
+	            err_msg += std::to_string(batch_buffer_size) + ": " + std::to_string(image_handle->v_img[i + j].img.data.get()[0]) + ' ';
+                tran_data->b_info.frame_ID.push_back(image_handle->b_info.frame_ID[i + j]);
+            } 
+            else {
+                if (memset_s(_input_buffer1 + j*atom_size, atom_size*sizeof(float), static_cast<float>(0.0), atom_size*sizeof(float))) {
+                    HIAI_ENGINE_LOG("[MindInferenceEngine] ERROR, batch padding for image data failed");
+                    is_successed = false;
+                    break;
+                }
+                tran_data->b_info.batch_size = j;
+                tran_data->b_info.frame_ID.push_back(-1);//ID of the all zero frame is set to -1
+            }
+        }
+        if (!is_successed) {
+            send_data_when_exception("[MindInferenceEngine] batch " + std::to_string(tran_data->b_info.batch_ID) + " failed!");
+            break;
+        }
+
+
+	//wwhb
+        //batch_buffer_size = batchsize*(64+10+2)*128;
+
+        std::shared_ptr<hiai::AINeuralNetworkBuffer> neural_buffer1 = std::shared_ptr<hiai::AINeuralNetworkBuffer>(new hiai::AINeuralNetworkBuffer());
+
+        neural_buffer1->SetBuffer((void*)_input_buffer1, batch_buffer_size );//* ATOM/(ATOM+BOND+INDEX));
+
+
+        std::shared_ptr<hiai::IAITensor> input_data1 = std::static_pointer_cast<hiai::IAITensor>(neural_buffer1);
+
+        input_data_vec.push_back(input_data1);
+
+
+        chk1 = *(pdata+11*128+1);
+        chk2 = *(_input_buffer1+11*128+1);
+        chk3 = atom_size;
+        //chk3 = batch_buffer_size;
+        // 2.Call Process, Predict
+        ret = ai_model_manager_->CreateOutputTensor(input_data_vec, output_data_vec);
+        if (hiai::SUCCESS != ret)
+        {
+            send_data_when_exception("[MindInferenceEngine] CreateOutputTensor failed");
+            break;
+            //return HIAI_ERROR;
+        }
+        hiai::AIContext ai_context;
+        HIAI_ENGINE_LOG("[MindInferenceEngine] ai_model_manager_->Process start!");
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	gettimeofday(&start1, NULL);
+	ret = ai_model_manager_->Process(ai_context, input_data_vec, output_data_vec, 0);
+	gettimeofday(&end1, NULL);
+	//diff = 1000000 * (end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+	diff1 = (end1.tv_sec-start1.tv_sec)+ (end1.tv_usec-start1.tv_usec)*0.000001;
+        //err_msg="pppppppppppppppp    times:"+std::to_string(diff1)+"ms\n";
+        //send_data_when_exception(err_msg);
+        //break;
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if (hiai::SUCCESS != ret)
+        {
+         	//whb
+            err_msg += "[MindInferenceEngine] whb ai_model_manager Process failed------- intput=" + std::to_string(input_data_vec.size()) + "    output=" + std::to_string(output_data_vec.size()) + "    bs=" + std::to_string(batch_size)+ "   SUCCESS=" + std::to_string(hiai::SUCCESS) +  "/ret:=" + std::to_string(ret) + "    image_size=" + std::to_string(image_size) + "    buffer_size=" + std::to_string(batch_buffer_size) +"   use time1 = " + std::to_string(diff1)+"ms\n";
+            send_data_when_exception(err_msg);
+            break;
+            //return HIAI_ERROR;
+        }
+        input_data_vec.clear();
+        //3.set the tran_data with the result of this batch
+        tran_data->size = output_data_vec.size();
+        tran_data->status = true;
+	tmp1 = tran_data->size;
+
+        float *ptr= NULL; 
+
+
+        for (int i = 0; i<tran_data->size; ++i)
+        {
+            std::shared_ptr<hiai::AINeuralNetworkBuffer> result_tensor = std::static_pointer_cast<hiai::AINeuralNetworkBuffer>(output_data_vec[i]);
+            OutputT out;
+            out.size = result_tensor->GetSize();
+            out.name = result_tensor->GetName();
+            HIAI_ENGINE_LOG("Output tensor names: %s\n", out.name.c_str());
+	  
+            try{
+                ptr = new float[out.size];
+	        tmp2 = out.size;
+            }
+            catch (const std::bad_alloc& e) {
+                break;
+                //return HIAI_ERROR;
+            }
+
+            if (memcpy_s(ptr, out.size, result_tensor->GetBuffer(), out.size)) {
+                is_successed = false;
+                delete[] ptr;
+                ptr = NULL;
+                HIAI_ENGINE_LOG("[MindInferenceEngine] ERROR, copy output buffer failed");
+                break;
+            }
+            
+           ///////////////////
+           //for(int i=0;i<90;++i)
+           //    HIAI_ENGINE_LOG("ddddddddddddddid;%d,result:%f\n",i,ptr[i]);
+           ///////////////////
+
+            out.data.reset(ptr);
+            tran_data->output_data_vec.push_back(out);
+        }
+            //chk4 = *((int*)ptr); 
+            //chk5 = *((int*)(ptr+1)); 
+            //chk6 = *((int*)(ptr+2)); 
+            //chk7 = *((int*)(ptr+3)); 
+            //chk4 = *(ptr); 
+            //chk5 = *((ptr+1)); 
+            //chk6 = *((ptr+2)); 
+            //chk7 = *((ptr+3)); 
+        if (!is_successed) {
+            send_data_when_exception("[MindInferenceEngine] batch " + std::to_string(tran_data->b_info.batch_ID) + " failed!");
+            break;
+        }
+
+        //4. send the result
+	tran_data->b_info.timestamp.push_back(image_handle->b_info.timestamp[0]);	//res_ptr
+	tran_data->b_info.timestamp.push_back(image_handle->b_info.timestamp[1]);	//res_len
+
+        gettimeofday(&end,NULL);
+        diff = (end.tv_sec-start.tv_sec)+ (end.tv_usec-start.tv_usec)*0.000001;
+        tran_data->msg = ( " whole process time: " + std::to_string(diff)+"s" + ", nn model time: " + std::to_string(diff1) + "s\n");
+
+        repeat = 0;
+        do {
+            hiai_ret = SendData(0, "EngineTransT", std::static_pointer_cast<void>(tran_data));
+            if (HIAI_QUEUE_FULL == hiai_ret)
+            {
+                HIAI_ENGINE_LOG("[MindInferenceEngine] queue full, sleep 50ms");
+                usleep(50000);
+            }
+            repeat++;
+        } while ((hiai_ret == HIAI_QUEUE_FULL) && (repeat < 2));
+        if (HIAI_OK != hiai_ret)
+        {
+            HIAI_ENGINE_LOG("[MindInferenceEngine] SendData failed! error code: %d", hiai_ret);
+        }
+        //5. release sources
+        output_data_vec.clear();
+        tran_data = nullptr;
+    }
+
+    delete[] _input_buffer1;
+    _input_buffer1 = nullptr;
+
+    //HIAI_ENGINE_LOG("[MindInferenceEngine] end process!");
+    //send_data_when_exception( std::to_string(chk1)+ ' ' +std::to_string(chk2)+ ' ' +std::to_string(chk3)+ "\n" + std::to_string(chk4)+ ' ' +std::to_string(chk5)+ ' ' +std::to_string(chk6)+ ' '+ std::to_string(chk7)+ '\n' + "output_vec_size" + std::to_string(tmp1) + " out.size:" + std::to_string(tmp2)  + " whole process time: " + std::to_string(diff)+"s\n" + "nn model time: " + std::to_string(diff1) + "s\n");
+
+    return HIAI_OK;
+}

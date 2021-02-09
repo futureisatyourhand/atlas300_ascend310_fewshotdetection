@@ -80,7 +80,7 @@ scp comp4_det_test_* liqian@10.2.151.160:/home1/liqian/Fewshot_Detection/results
 cd /home1/liqian/Fewshot_Detection/  
 source activate darknet  
 python2 script/voc_eval results/get_weights_test_plot/atlas/
-
+![image](https://github.com/futureisatyourhand/atlas300_ascend310_fewshotdetection/blob/master/%E5%9B%BE%E7%89%87/atlas.png)
 
 
 ## visual results from k-shot on Atlas300 Ascend310  

@@ -86,3 +86,18 @@ python2 script/voc_eval results/get_weights_test_plot/atlas/
 ## visual results from k-shot on Atlas300 Ascend310  
 python2 plot_box.py results/get_weights_test_plot/atlas/
 
+## License and Citation
+
+If you use these methods in you research about algorithm, please cite:
+```
+@misc{li2020toprelated,
+      title={Top-Related Meta-Learning Method for Few-Shot Detection}, 
+      author={Qian Li and Nan Guo and Xiaochun Ye and Duo Wang and Dongrui Fan and Zhimin Tang},
+      year={2020},
+      eprint={2007.06837},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
+Please cite atlas combing python with c++ in your publications if it helps your research.

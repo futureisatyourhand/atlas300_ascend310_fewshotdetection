@@ -10,6 +10,116 @@ make pycaffe
 make distribute  
 ```
 Our code is based on https://github.com/BVLC/caffe.git.
+However reorg is wrong for caffe and atlas,we make reorg layer by 
+```
+layer{
+    type:"Reshape"
+    name:"reorg1"
+    bottom:"layer21-act"
+    top:"reorg1"
+    reshape_param{
+        shape{dim:-1 dim:13 dim:2 dim:26}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg2"
+    bottom:"reorg1"
+    top:"reorg2"
+    reshape_param{
+        shape{dim:-1 dim:2  dim:26}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg3"
+    bottom:"reorg2"
+    top:"reorg3"
+    reshape_param{
+        shape{dim:-1 dim:2  dim:13 dim:2}
+    }
+}
+
+
+layer{
+    bottom:"reorg3"
+    top:"reorg4"
+    name:"reorg4"
+    type:"Permute"
+    permute_param {
+       order: 0
+        order: 2
+        order: 1
+        order: 3
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg5"
+    bottom:"reorg4"
+    top:"reorg5"
+    reshape_param{
+        shape{dim:-1 dim:13 dim:4}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg6"
+    bottom:"reorg5"
+    top:"reorg6"
+    reshape_param{
+        shape{dim:-1 dim:13 dim:13 dim:4}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg7"
+    bottom:"reorg6"
+    top:"reorg7"
+    reshape_param{
+        shape{dim:-1 dim:169 dim:4}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg8"
+    bottom:"reorg7"
+    top:"reorg8"
+    reshape_param{
+        shape{dim:-1 dim:64 dim:169 dim:4}
+    }
+}
+layer{
+    bottom:"reorg8"
+    top:"reorg9"
+    name:"reorg9"
+    type:"Permute"
+    permute_param {
+       order: 0
+        order: 3
+        order: 1
+        order: 2
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg10"
+    bottom:"reorg9"
+    top:"reorg10"
+    reshape_param{
+        shape{dim:-1 dim:256 dim:169}
+    }
+}
+layer{
+    type:"Reshape"
+    name:"reorg11"
+    bottom:"reorg10"
+    top:"reorg11"
+    reshape_param{
+        shape{dim:-1 dim:256 dim:13 dim:13}
+    }
+}
+```
 ## get our lmdb for voc dataset
 ```
 build/tools/convert_imageset --resize_height=416 --resize_width=416 /home/huawei/JPEGImages/ /home/huawei/yolov2/mycaffe/train.txt /home/huawei/yolov2/mycaffe/lmdb

@@ -1,18 +1,18 @@
 # atlas300_ascend310_fewshotdetection
 
 ## envs for caffe
-su huawei
-cd /home/huawei/caffe
-make clean
-make pycaffe
-make distribute
+su huawei  
+cd caffe  
+make clean  
+make pycaffe  
+make distribute  
 
 ## get our lmdb for voc dataset
 build/tools/convert_imageset --resize_height=416 --resize_width=416 /home/huawei/JPEGImages/ /home/huawei/yolov2/mycaffe/train.txt /home/huawei/yolov2/mycaffe/lmdb
 
 ## train caffe
-cd /home/huawei/yolov2/mycaffe/
-/home/huawei/caffe/build/tools/caffe train -iterations 1  -solver ./solver.prototxt 2>&1| tee caffe_train.log
+cd yolov2/mycaffe/
+./caffe/build/tools/caffe train -iterations 1  -solver ./solver.prototxt 2>&1| tee caffe_train.log
 
 ## assign weights from torch
 python get_params.py
@@ -29,7 +29,7 @@ according to PDF from bbs, you can install drivers and envs to execute your prog
 
 
 #####################################################################
-## create offline-model
+## create offline-model for Atlas300 Ascend310
   
 cd /home/huawei/ddk/ddk/uihost/bin  
 ```
@@ -38,7 +38,7 @@ cd /home/huawei/ddk/ddk/uihost/bin
 
 ## create program for atlas300
 
-cd /home/huawei/chems/bioavailability_model/InferLib
+cd atlas300_ascend310/InferLib
 bash build.sh A300
 cd ../
 sh update.sh
@@ -54,10 +54,7 @@ sh update.sh
         ai_config {
             items {
                 name: "model_path"
-                #value: "../model_convert/protein_cpp/new.om"
-                #value: "../model_convert/D3Protein/new.om"   #batch = 64
-                #value: "../model_convert/ContactPred/new.om"  #batch = 16
-                value: "/home/huawei/samples/Samples/my_right/data/models/5shot.om" #batch = 1
+                value: "data/models/5shot.om" #batch = 1
             }
             items {
                 name: "batch_size"
@@ -69,8 +66,8 @@ sh update.sh
 ```
 
 ## first, update test.sh for test-kshot
-## second, update detect.py for k-shot
-## bias=np.load("/home/huawei/yolov2/voc_weights/5shot/detect/conv23_bias.npy")  
+## second, update detect.py for k-shot(e.g., k=5)
+## bias=np.load("./yolov2/voc_weights/5shot/detect/conv23_bias.npy")  
 sh test.sh  
 cd results  
 scp comp4_det_test_* liqian@10.2.151.160:/home1/liqian/Fewshot_Detection/results/get_weights_test_plot/atlas  

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# --------------------------------------
+# @Time    : 2021/1/16$ 12:12$
+# @Author  : Qian Li
+# @Email   : 1844857573@qq.com
+# @File    : demo.prototxt
+# Description :caffe model for inference sub-network.
 name: "yolov2_darknet416"
 layer {
   name: "data"

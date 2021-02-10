@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# --------------------------------------
+# @Time    : 2021/1/1$ 12:12$
+# @Author  : Qian Li
+# @Email   : 1844857573@qq.com
+# @File    : inference.py
+# Description :validate caffe model
+# --------------------------------------
 import caffe
 import numpy as np
 deploy="demo.prototxt"

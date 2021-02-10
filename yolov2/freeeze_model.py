@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# --------------------------------------
+# @Time    : 2020/12/15$ 12:12$
+# @Author  : Qian Li
+# @Email   : 1844857573@qq.com
+# @File    : freeeze_model.py
+# --------------------------------------
 import tensorflow as tf
 from model import Darknet
 from config import class_names

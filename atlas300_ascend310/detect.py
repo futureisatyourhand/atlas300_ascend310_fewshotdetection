@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# --------------------------------------
+# @Time    : 2021/1/20$ 12:12$
+# @Author  : Qian Li
+# @Email   : 1844857573@qq.com
+# @File    : detect.py
+# Description :inference few-shot detection program on atlas300 and post-processing, write results into results/comp4_det_test_%s.txt.
 import numpy as np
 import ctypes
 from utils import *
@@ -5,17 +12,7 @@ import ctypes
 import sys
 import os
 import sys
-#mylib = ctypes.cdll.LoadLibrary("../inferences/InferLib/out/infer.so")
-#data = np.ones((1,416,416,3), dtype=np.float32)
-#data = np.repeat(data, batch_size, axis=0).reshape(-1)
 
-#dataptr = data.ctypes
-#dataptr = (ctypes.c_float*data.shape[0])(*data)
-#result = np.ones((batch_size), np.float32)
-#resultptr = (ctypes.c_float*result.shape[0])(*result)
-#end = datetime.datetime.now()
-
-#package_data = np.ones((1,416,416,3), dtype=np.float32)
 n_cls=20
 nms_thresh=0.45
 classes=['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
@@ -27,16 +24,11 @@ for i, cls_name in enumerate(classes):
     buf = 'results/comp4_det_test_%s.txt' % (cls_name)
     fps[i] = open(buf, 'a+')
 
-#for ids in os.listdir("convert_data/"):
 
 ids=sys.argv[1]
 ids=ids.strip("\n").strip("")+".npy"
 package_data=np.load("convert_data/"+ids)#("atlas_data/"+ids)
 bs=1
-#if os.path.exists("output.txt"):
-#    os.remove("output.txt")
-#package_data=np.transpose(package_data,[0,3,1,2])
-#package_data=np.tile(package_data,(100,1,1,1))
 
 b,rows,cols,channels = package_data.shape
 data = package_data.reshape(-1)
@@ -55,14 +47,11 @@ mylib._Z5inferPfiiiiiiiS_i(data, 1, channels, rows, cols,3*416*416, 4, 5, result
 #del mylib
 
 f=open("output.txt",'r')
-#print("====",len(f.readlines()))
 content=f.readlines()[0]
-#content=content[0]
 content=content.strip(" ")
 content=content.split(" ")
 f.close()
-#os.remove("output.txt")
-#os.mknod("output.txt")
+
 
 output=[]
 ctn=30*169
@@ -100,4 +89,3 @@ for b in range(bs):
                 fps[i].write('%s %f %f %f %f %f %f\n' % (ids.split('.')[0],cls_conf, prob, x1, y1, x2, y2))
 for i in range(n_cls):
     fps[i].close()
-#os.kill()#system("pause")

@@ -1,6 +1,6 @@
 # atlas300_ascend310_fewshotdetection
 Overall of few-shot detection system and cloud-based edge computing
-![image](https://github.com/futureisatyourhand/atlas300_ascend310_fewshotdetection/blob/master/%E5%9B%BE%E7%89%87/processing.jpg)  
+![image](https://github.com/futureisatyourhand/atlas300_ascend310_fewshotdetection/blob/master/%E5%9B%BE%E7%89%87/2.png)  
 
 The few-shot detection is trained on the cloud server (e.g.,GeForce GTX1080, TITAN Xp and X86 Ubuntu system), and the environment of inference is the X86 Ubuntu 14.04 server and Atlas300 accelerator card to achieve edge computing. Combing the cloud and edge plays an important role in the application of meta-learning few-shot detection research in real life.
 # sub-network for detecting, and meta model for extracting category-based features

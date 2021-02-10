@@ -9,8 +9,31 @@ make clean
 make pycaffe  
 make distribute  
 ```
-Our code is based on https://github.com/BVLC/caffe.git.
-However reorg is wrong for caffe and atlas,we make reorg layer by 
+Our code is based on https://github.com/BVLC/caffe.git.  
+The version is PyTorch 0.3.1.post2,
+```
+class Reorg(nn.Module):  
+    def __init__(self, stride=2):  
+        super(Reorg, self).__init__()  
+        self.stride = stride  
+    def forward(self, x):   
+        stride = self.stride  
+        assert(x.data.dim() == 4)  
+        B = x.data.size(0)  
+        C = x.data.size(1)  
+        H = x.data.size(2)  
+        W = x.data.size(3)  
+        assert(H % stride == 0)  
+        assert(W % stride == 0)  
+        ws = stride  
+        hs = stride  
+        x = x.view(B, C, H/hs, hs, W/ws, ws).transpose(3,4).contiguous()  
+        x = x.view(B, C, H/hs*W/ws, hs*ws).transpose(2,3).contiguous()  
+        x = x.view(B, C, hs*ws, H/hs, W/ws).transpose(1,2).contiguous()  
+        x = x.view(B, hs*ws*C, H/hs, W/ws)  
+        return x  
+```
+However reorg is wrong for caffe and atlas,we make right reorg layer by 
 ```
 layer{
     type:"Reshape"

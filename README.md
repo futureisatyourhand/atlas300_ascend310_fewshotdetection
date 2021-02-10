@@ -3,7 +3,62 @@ Overall of few-shot detection system and cloud-based edge computing
 ![image](https://github.com/futureisatyourhand/atlas300_ascend310_fewshotdetection/blob/master/%E5%9B%BE%E7%89%87/11.png)  
 
 The few-shot detection is trained on the cloud server (e.g.,GeForce GTX1080, TITAN Xp and X86 Ubuntu system), and the environment of inference is the X86 Ubuntu 14.04 server and Atlas300 accelerator card to achieve edge computing. Combing the cloud and edge plays an important role in the application of meta-learning few-shot detection research in real life.
-
+# sub-network for detecting, and meta model for extracting category-based features
+Detection:D
+```
+layer     filters    size              input                output
+    0 conv     32  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  32  
+    1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32  
+    2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64  
+    3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64  
+    4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128  
+    5 conv     64  1 x 1 / 1   104 x 104 x 128   ->   104 x 104 x  64  
+    6 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128  
+    7 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128  
+    8 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256  
+    9 conv    128  1 x 1 / 1    52 x  52 x 256   ->    52 x  52 x 128  
+   10 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256  
+   11 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256  
+   12 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512  
+   13 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256  
+   14 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512  
+   15 conv    256  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x 256  
+   16 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512  
+   17 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512  
+   18 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024  
+   19 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512  
+   20 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024  
+   21 conv    512  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 512  
+   22 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024  
+   23 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024  
+   24 conv   1024  3 x 3 / 1    13 x  13 x1024   ->    13 x  13 x1024  
+   25 route  16  
+   26 conv     64  1 x 1 / 1    26 x  26 x 512   ->    26 x  26 x  64  
+   27 reorg              / 2    26 x  26 x  64   ->    13 x  13 x 256  
+   28 route  27 24  
+   29 conv   1024  3 x 3 / 1    13 x  13 x1280   ->    13 x  13 x1024  
+   30 dconv  1024  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x1024  
+   31 conv     30  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x  30  
+   32 detection  
+```
+meta-model:M
+```
+layer     filters    size              input                output  
+    0 conv     32  3 x 3 / 1   416 x 416 x   4   ->   416 x 416 x  32  
+    1 max          2 x 2 / 2   416 x 416 x  32   ->   208 x 208 x  32  
+    2 conv     64  3 x 3 / 1   208 x 208 x  32   ->   208 x 208 x  64  
+    3 max          2 x 2 / 2   208 x 208 x  64   ->   104 x 104 x  64  
+    4 conv    128  3 x 3 / 1   104 x 104 x  64   ->   104 x 104 x 128  
+    5 max          2 x 2 / 2   104 x 104 x 128   ->    52 x  52 x 128  
+    6 conv    256  3 x 3 / 1    52 x  52 x 128   ->    52 x  52 x 256  
+    7 max          2 x 2 / 2    52 x  52 x 256   ->    26 x  26 x 256  
+    8 conv    512  3 x 3 / 1    26 x  26 x 256   ->    26 x  26 x 512  
+    9 max          2 x 2 / 2    26 x  26 x 512   ->    13 x  13 x 512  
+   10 conv   1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024  
+   11 max          2 x 2 / 2    13 x  13 x1024   ->     6 x   6 x1024  
+   12 conv   1024  3 x 3 / 1     6 x   6 x1024   ->     6 x   6 x1024  
+   13 glomax       6 x 6 / 1     6 x   6 x1024   ->     1 x   1 x1024  
+```
 ## Caffe
 We add permute and Reorg for YOLOv2. 
 ```
